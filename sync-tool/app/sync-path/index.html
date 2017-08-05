@@ -1,0 +1,89 @@
+
+ <div class="row">
+    <div class="col-md-8">
+      <h4>Sync Path</h4>
+       
+    </div>
+    <div class="col-md-4">
+      <div class="pull-right">          
+          <a href="#" ui-sref="root.syncPathNew" class="btn btn-primary btn-sm">
+              <span class="glyphicon glyphicon-plus-sign"></span> ADD New
+          </a>
+      </div>
+    </div>
+ </div>
+<form name="SyncpathForm" role="form" novalidate>
+ <div class="row" >
+	  <div class="col-md-3"  ng-class="{'has-error': SyncpathForm.Source.$invalid || (SyncpathForm.Source.$touched && SyncpathForm.Source.$pristine )}">
+		  <select name="Source" class="form-control" id="Source"
+			  ng-model="vm.syncPath.SourceSystem" title="Source System" ng-options="Target.Id as Target.SysName for Target in vm.lstSourceTargetdata" ng-required="true" >
+			  <option value="">Select Source System</option>
+		  </select>
+		  <!--<small ng-show="SyncpathForm.Source.$error.required && (SyncpathForm.Source.$dirty)" class="help-block" style="">Please Select Source System.</small>-->
+	  </div>
+	  <div class="col-md-3"  ng-class="{'has-error': SyncpathForm.Target.$invalid || (SyncpathForm.Target.$touched && SyncpathForm.Target.$pristine)}">
+			<select name="Target" class="form-control" id="Target"
+			  ng-model="vm.syncPath.TargetSystem"  title="Target System" ng-options="Target.Id as Target.SysName for Target in vm.lstSourceTargetdata | filter:{Id: '!' +vm.syncPath.SourceSystem}" ng-required="true" ng-hide="vm.syncPath.SourceSystem==undefined" ng-disabled="vm.syncPath.SourceSystem==undefined" >
+			  <option value=''>Select Target System</option>
+		  </select>	
+		  <!-- <small ng-show="SyncpathForm.Target.$error.required && (SyncpathForm.Target.$dirty)"  ng-hide="vm.syncPath.SourceSystem==undefined" class="help-block" style="">Please Select Target System.</small>-->
+		</div>
+	  <div class="col-md-3">
+			<button class="btn btn-primary" ng-disabled="SyncpathForm.$invalid" ng-click="vm.search()">Load</button>
+	  </div>
+ </div>
+ </form>
+<br>
+ <div class="row">
+    <div class="col-md-12">
+     <table ng-table="vm.model.gridSyncPathConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" > 
+             <colgroup>
+          <col width="17%" />
+           <!--  <col width="12%" />
+          <col width="12%" />-->
+          <col width="17%" />
+          <col width="16%" />
+          <col width="10%" />
+          <col width="15%" />
+          <col width="10%" />
+          <col width="15%" />
+        </colgroup> 
+        <tr ng-repeat="row in $data" ng-form="rowForm">
+          <td title={{SyncPathCode}} data-title="'Sync Path Code'" filter="{SyncPathCode: 'text'}" sortable="'SyncPathCode'">           
+              <span title={{row.SyncPathCode}} > {{row.SyncPathCode}}</span>   
+          </td>
+         <!-- <td data-title="'Source System'" filter="{SourceSystemName: 'text'}" sortable="'SourceSystemName'">
+            <span title={{row.SourceSystemName}} > {{row.SourceSystemName}}</span>
+          </td>
+          <td data-title="'Target System'" filter="{TargetSystemName: 'text'}" sortable="'TargetSystemName'">
+            <span title={{row.TargetSystemName}} >{{row.TargetSystemName}}</span>
+            </td>-->
+          <td data-title="'Source Company ID'" filter="{SourceCompanyID: 'text'}" sortable="'SourceCompanyID'">
+            <span title={{row.SourceCompanyID}} >{{row.SourceCompanyID}}</span>
+          </td>
+          <td data-title="'Target Company ID'" filter="{TargetCompanyID: 'text'}" sortable="'TargetCompanyID'">
+           <span title={{row.TargetCompanyID}} >{{row.TargetCompanyID}}</span>
+          </td>
+          <td data-title="'Auto Sync Property'" filter="{AutoSyncProperty: 'text'}" sortable="'AutoSyncProperty'">
+            <input type="checkbox" ng-model="row.AutoSyncProperty" ng-disabled="true" name="filter"></td>
+          <td data-title="'Next Sync Time'" filter="{NextSyncTime: 'text'}" sortable="'NextSyncTime'">
+            <span title={{row.NextSyncTime}} >{{row.NextSyncTime | date:'MM/dd/yyyy hh:mm:ss'}}</span>
+          </td>
+          <td data-title="'Sync Interval'" filter="{SyncInterval: 'text'}" sortable="'SyncInterval'">
+            <span title={{row.SyncInterval}} >{{row.SyncInterval}} - Hrs</span>
+         </td>
+          <td>
+            <button class="btn btn-default btn-sm ng-scope" ng-click="vm.edit(row, rowForm,$event,'edit')"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button class="btn btn-primary btn-sm" ng-click="vm.showModal(row)" title="Go to Log Files"><span class="glyphicon glyphicon-open-file"></span></button>
+            <button class="btn btn-primary btn-sm" title="Go to Log Trace" ng-click="vm.edit(row, rowForm,$event,'log')"><span class="glyphicon glyphicon-modal-window"></span></button>
+          </td>
+        </tr>
+		 <tr>
+			<td colspan="7" class="NoData" ng-show="$data.length==0">
+				No data found.
+			</td>
+          </tr>
+      </table>
+      </div>
+  </div>
+

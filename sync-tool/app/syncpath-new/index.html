@@ -1,0 +1,459 @@
+ <div class="row">
+    <div class="col-md-8">
+      <h4 >Sync Path New</h4>
+    </div>
+    <div class="col-md-4" style="color:red">
+			<div id="formAlert" class="alert alert-danger collapse">
+				<a id="linkclose"  class="close" >&times;</a>
+				<strong>Error!</strong> OOP's Check form validations..
+			</div>
+		</div>
+     <div class="col-md-4" style="color:red">
+			<div id="syncPathcodeValid" class="alert alert-danger collapse">
+				<a id="syncPathcodeclose"  class="close" >&times;</a>
+			    Sync Path Code Already exists.
+			</div>
+		</div>    
+		<loading></loading>
+	<!--	<div class="col-md-12 col-md-offset-10">
+          <div>
+              <button type="submit" class="btn btn-primary" >Save Sync Path Details</button>
+          </div>           
+     </div>-->
+ </div> 
+
+<!--<span>{{vm.syncPath}}</span>-->
+<div class="row">
+	<form name="SyncPathForm" ng-submit="vm.submitForm(SyncPathForm)" novalidate>
+		  <div class="row">
+				<div class="col-md-6">
+					<a class="btn btn-primary" style="margin-left:10px;" href="#" ui-sref="root.syncPath">
+								<span class="glyphicon glyphicon-menu-left"></span>Back to Sync Path
+					</a>
+				</div>
+        <div class="col-md-6">
+          <div style="float:right;margin-right:10px;">
+              <button type="submit" class="btn btn-primary" >{{vm.buttontxt}}</button>
+          </div>           
+        </div>       
+      </div>  
+			<div class="col-lg-6">
+				<br>
+        	<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.Source.$invalid && (SyncPathForm.Source.$dirty || vm.submitted)}">
+						<label>Source</label>
+						 <select name="Source" class="form-control"
+							ng-model="vm.syncPath.Source" ng-options="Source.Id as Source.SysName for Source in vm.lstSourceTargetdata" ng-required="true">
+							<option value=''>Select Source</option>
+						 </select>
+          </div>
+
+					<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.SourceCompanyId.$invalid && (SyncPathForm.SourceCompanyId.$dirty || vm.submitted)}">
+						<label>Source Company Id</label>
+						<input type="text" name="SourceCompanyId" class="form-control" ng-model="vm.syncPath.SourceCompanyId" placeholder="Source Company Id" ng-required="true">
+      	  </div>
+
+					<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.SourceURL.$invalid && (SyncPathForm.SourceURL.$dirty || vm.submitted)}">
+						<label>Source URL</label>
+						<input type="text" name="SourceURL" class="form-control" ng-model="vm.syncPath.SourceURL" placeholder="Source URL" ng-required="true">
+					</div>
+
+					<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.SyncPathCode.$invalid && (SyncPathForm.SyncPathCode.$dirty || vm.submitted)}">
+            <label>Sync Path Code</label>		
+						 <input type="text" name="SyncPathCode" class="form-control" ng-model="vm.syncPath.SyncPathCode" placeholder="Sync Path Code" ng-required="true"/>	                  
+          </div>	
+
+          <div class="form-group" ng-class="{ 'has-error' : SyncPathForm.NextSyncTime.$invalid && (SyncPathForm.NextSyncTime.$dirty || vm.submitted)}">
+						<label>Sync Interval</label>
+						<input type="number" name="NextSyncTime" class="form-control" ng-model="vm.syncPath.NextSyncTime" placeholder="Sync Interval in hrs" ng-required="true">
+					</div>	         
+			</div>
+	
+			<div class="col-lg-6">	
+				<br>	
+        	<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.Target.$invalid && (SyncPathForm.Target.$dirty || vm.submitted)}">
+						<label>Target</label>
+						 <select name="Target" class="form-control"
+							ng-model="vm.syncPath.Target" ng-options="Target.Id as Target.SysName for Target in vm.lstSourceTargetdata  | filter:{Id: '!' +vm.syncPath.Source}" ng-disabled="vm.syncPath.Source==undefined" ng-required="true" ng-change="vm.showAccountType()">
+							<option value=''>Select Target</option>
+						 </select>
+					</div>
+
+					<div class="form-group" ng-class="{ 'has-error' : SyncPathForm.TargetCompanyId.$invalid && (SyncPathForm.TargetCompanyId.$dirty || vm.submitted)}">
+						<label>Target Company Id</label>
+						<input type="text" name="TargetCompanyId" class="form-control" ng-model="vm.syncPath.TargetCompanyId" placeholder="Target Company Id" ng-required="true">
+					 </div>
+
+					 <div class="form-group" ng-class="{ 'has-error' : SyncPathForm.TargetURL.$invalid && (SyncPathForm.TargetURL.$dirty || vm.submitted)}">
+						<label>Target URL</label>
+						<input type="text" name="TargetURL" class="form-control" ng-model="vm.syncPath.TargetURL" placeholder="Target URL" ng-required="true">
+					 </div>		
+
+					  <div class="form-group" ng-class="{ 'has-error' : SyncPathForm.SyncInterval.$invalid && (SyncPathForm.SyncInterval.$dirty || vm.submitted)}">
+							<label>Next Sync Time</label>		
+							<div class="input-group date form_datetime "  data-date-format="mm/dd/yyyy hh:ii:ss" data-link-field="dtp_input1">
+								<input class="form-control" name="SyncInterval" placeholder="mm/dd/yyyy - hh:ii:ss" size="16"  ng-model="vm.syncPath.SyncInterval" type="text" ng-required="true" value="" readonly>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+								<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+							</div>
+						</div>						
+				<br>
+					 <div class="form-group"> 
+						<label class="space"><input   type="checkbox" name="IsMultiEntityClient " value="value"  ng-model="vm.syncPath.IsMultiEntityClient">Is Non-Shared Company</label>
+						<a uib-popover  popover-trigger="'mouseenter'" uib-popover-html="vm.getPopoverContent(vm.nonSharedHelpTemplate)" popover-title="Non-Shared"  popover-placement="right"><span class="glyphicon glyphicon-info-sign"/></a>
+					 </div>			
+			</div>
+      <br>      
+	</form>
+</div>
+
+<br><br>
+<div>
+  <div class="row">
+  	<div class="col-md-12">
+  		<ul class="nav nav-tabs">
+       	<li ng-class="{ active: vm.isSet(1) }">
+          	<a href ng-click="vm.setTab(1)">Property Map</a>
+       	</li>       	
+       	<li ng-class="{ active: vm.isSet(3) }">
+          	<a href ng-click="vm.setTab(3)">Account Type</a>
+       	</li>
+		 <li ng-class="{ active: vm.isSet(2) }">
+          	<a href ng-click="vm.setTab(2)">Entity Domain</a>
+       	</li>
+        <li ng-class="{ active: vm.isSet(4) }" ng-hide="vm.showAccounttype">
+            <a ng-click="vm.setTab(4)">Sync Config</a>
+        </li>
+     	</ul>
+  	</div>
+  </div> 
+  <div class="row">
+    <div class="col-md-12">
+  		<div class="jumbotron">
+       	<div ng-show="vm.isSet(1)">
+						<div>
+							<div class="row">
+								<div class="row" style="height:30px !important">
+									<div class="col-md-4" >
+											<div id="PropertyMapValid" class="alert alert-info collapse alertPropertyDomain">
+												<a id="PropertyMapclose"  class="close" >&times;</a>
+												At a time One Record will be editable, Cancel or save editable record
+											</div>
+										</div>
+								</div>
+								<div class="col-md-12" ng-init="vm.syncPath.AutoSync=false">
+                                    <label class=""><input ng-show="false" type="checkbox" name="AutoSync" value="value" ng-model="vm.syncPath.AutoSync">Sync All Properties Data</label>
+                                    <label class="radio-inline"><input type="radio" name="AutoSync" ng-model="vm.syncPath.AutoSync" ng-value="false" />No</label>
+                                    <label class="radio-inline"> <input type="radio" name="AutoSync" ng-model="vm.syncPath.AutoSync" ng-value="true" />Yes</label>
+									
+									<a uib-popover  popover-trigger="'mouseenter'" uib-popover-html="vm.getPopoverContent(vm.syncHelpTemplatedesc)" popover-title="Sync All Properties Data"  popover-placement="right"><span class="glyphicon glyphicon-info-sign"/></a>
+									  <script id="template.html" type="text/ng-template">
+										<div>
+											<span>{{vm.desc}}</span>
+										</div>										 
+									 </script>								
+									<div class="brn-group pull-right">
+										<!-- ngIf: demo.isEditing -->
+                                        	<button class="btn btn-primary btn-sm" ng-show="!vm.syncPath.AutoSync" ng-disabled="vm.enableAddPropertyMap" ng-click="vm.addPropertyMap()">
+											<span class="glyphicon glyphicon-plus" ng-disabled="vm.enableAddPropertyMap"></span>ADD New
+										</button>
+									</div>
+									<table ng-table="vm.model.entityMapGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+									 <tr ng-repeat="row in $data" ng-form="rowForm">
+											 <!--<td data-title="'Entity Domain Code'"  filter="{EntityDomainCode: 'text'}" sortable="'EntityDomainCode'" ng-switch="row.isEditing" ng-class="EntityDomainCode.$dirty ? 'bg-warning' : ''" ng-form="EntityDomainCode" >
+												<span ng-switch-default class="editable-text" title={{row.EntityDomainCode}} >{{row.EntityDomainCode}}</span>
+												<div class="controls" ng-class="EntityDomainCode.$invalid && EntityDomainCode.$dirty ? 'has-error' : ''" ng-switch-when="true">											
+												<select name="EntityDomainCode" class="form-control"
+													ng-model="row.EntityDomainCode" ng-options="Target.PropertyName as Target.PropertyName for Target in vm.entityCode" required>
+													<option value=''>Select Code</option>
+												</select>
+												</div>
+											</td>-->
+											 <td data-title="'Source Sync ID1'" filter="{SourceSyncID1: 'text'}"  sortable="'SourceSyncID1'" ng-switch="row.isEditing" ng-class="SourceSyncID1.$dirty ? 'bg-warning' : ''" ng-form="SourceSyncID1" >
+												<span ng-switch-default class="editable-text" title={{row.SourceSyncID1}} >{{row.SourceSyncID1}}</span>
+												<div class="controls" ng-class="SourceSyncID1.$invalid && SourceSyncID1.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="text" name="SourceSyncID1" ng-model="row.SourceSyncID1" class="editable-input form-control input-sm" required/>
+												</div>
+											</td>
+											 <td data-title="'Source Sync ID2'" filter="{SourceSyncID2: 'text'}"  sortable="'SourceSyncID2'" ng-switch="row.isEditing" ng-class="SourceSyncID2.$dirty ? 'bg-warning' : ''" ng-form="SourceSyncID2" >
+												<span ng-switch-default class="editable-text" title={{row.SourceSyncID2}} >{{row.SourceSyncID2}}</span>
+												<div class="controls" ng-class="SourceSyncID2.$invalid && SourceSyncID2.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="text" name="SourceSyncID2" ng-model="row.SourceSyncID2" class="editable-input form-control input-sm" required/>
+												</div>
+											</td>
+											<td data-title="'Target Sync ID'" filter="{TargetSyncID: 'text'}"  sortable="'TargetSyncID'" ng-switch="row.isEditing" ng-class="TargetSyncID.$dirty ? 'bg-warning' : ''" ng-form="TargetSyncID" >
+												<span ng-switch-default class="editable-text" title={{row.TargetSyncID}} >{{row.TargetSyncID}}</span>
+												<div class="controls" ng-class="TargetSyncID.$invalid && TargetSyncID.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="text" name="TargetSyncID" ng-model="row.TargetSyncID" class="editable-input form-control input-sm" required/>
+												</div>
+											</td>
+											<td>
+												<div ng-show="!vm.syncPath.AutoSync">												
+													<button class="btn btn-primary btn-sm" ng-click="vm.savePropertyMap(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+													<button class="btn btn-default btn-sm" ng-click="vm.cancelPropertyMap(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+													<button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.editPropertyMap(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+													<button class="btn btn-danger btn-sm" ng-click="vm.deletePropertyMap(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+        </div>
+		<div ng-show="vm.isSet(2)">
+        <div>
+							<div class="row">
+									<div class="row" style="height:30px !important">
+										<div class="col-md-4" >
+												<div id="EntityDomainValid" class="alert alert-info collapse alertPropertyDomain">
+													<a id="EntityDomainclose"  class="close" >&times;</a>
+													At a time One Record will be editable, Cancel or save editable record
+												</div>
+										</div>
+								 </div>	
+								<div class="col-md-12">
+									<div class="brn-group pull-right">
+										<!-- ngIf: demo.isEditing -->
+										<button class="btn btn-primary btn-sm" ng-disabled="vm.enableAddEntityDomain" ng-click="vm.addEntityDomain()">
+											<span class="glyphicon glyphicon-plus" ng-disabled="vm.enableAddEntityDomain"></span>ADD New
+										</button>
+									</div>
+									<table ng-table="vm.model.entityDomainGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+									 <tr ng-repeat="row in $data" ng-form="rowForm">
+											 <td data-title="'Entity Domain Code'"  filter="{EntityDomainCode: 'text'}" sortable="'EntityDomainCode'" ng-switch="row.isEditing" ng-class="EntityDomainCode.$dirty ? 'bg-warning' : ''" ng-form="EntityDomainCode" >
+												<span ng-switch-default class="editable-text" title={{row.EntityDomainCode}} >{{row.EntityDomainCode}}</span>
+												<div class="controls" ng-class="EntityDomainCode.$invalid && EntityDomainCode.$dirty ? 'has-error' : ''" ng-switch-when="true">
+											
+													<select name="EntityDomainCode" class="form-control"
+														ng-model="row.EntityDomainCode" ng-options="Target.PropertyName as Target.PropertyName for Target in vm.entityCode" required>
+															<option value=''>Select Code</option>
+													</select>
+												</div>
+											</td>
+											 <td data-title="'Sequence'" filter="{SyncSequence: 'text'}"  sortable="'SyncSequence'" ng-switch="row.isEditing" ng-class="SyncSequence.$dirty ? 'bg-warning' : ''" ng-form="SyncSequence" >
+												<span ng-switch-default class="editable-text" title={{row.SyncSequence}} >{{row.SyncSequence}}</span>
+												<div class="controls" ng-class="SyncSequence.$invalid && SyncSequence.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="number" name="SyncSequence" ng-model="row.SyncSequence" class="editable-input form-control input-sm" required/>												
+												</div>
+											</td>
+											 <td data-title="'Is Primary'" filter="{IsPrimaryDomain: 'text'}"  sortable="'IsPrimaryDomain'" ng-switch="row.isEditing" ng-class="IsPrimaryDomain.$dirty ? 'bg-warning' : ''" ng-form="IsPrimaryDomain" >
+												<span ng-switch-default class="editable-text" title={{row.IsPrimaryDomain}} >
+														<input  type="checkbox" ng-model="row.IsPrimaryDomain" ng-disabled="true"/>
+												</span>
+												<div class="controls" ng-class="IsPrimaryDomain.$invalid && IsPrimaryDomain.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input  type="checkbox"name="IsPrimaryDomain" ng-model="row.IsPrimaryDomain"  />
+												</div>
+											</td>
+											<td>
+												<button class="btn btn-primary btn-sm" ng-click="vm.saveEntityDomain(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+												<button class="btn btn-default btn-sm" ng-click="vm.cancelEntityDomain(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+												<button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.editEntityDomain(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+												<button class="btn btn-danger btn-sm" ng-click="vm.deleteEntityDomain(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+     	</div>
+        <div ng-show="vm.isSet(3)">
+         	<div ng-show="vm.showAccounttype">
+							<div class="row">
+								<div class="row" style="height:30px !important">
+										<div class="col-md-4" >
+												<div id="AccountTypeValid" class="alert alert-info collapse alertPropertyDomain">
+													<a id="AccountTypeclose"  class="close" >&times;</a>
+													At a time One Record will be editable, Cancel or save editable record
+												</div>
+										</div>
+								 </div>
+								<div class="col-md-12">
+									<div class="brn-group pull-right">
+										<!-- ngIf: demo.isEditing -->
+										<button class="btn btn-primary btn-sm" ng-disabled="vm.enableAddAccountType" ng-click="vm.addAccountType()">
+											<span class="glyphicon glyphicon-plus" ng-disabled="vm.enableAddAccountType"></span>ADD New
+										</button>
+									</div>
+									<table ng-table="vm.model.accountTypeGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+									<colgroup>
+										<col width="20%" />
+										<col width="20%" />
+										<col width="20%" />
+										<col width="13%" />
+										<col width="13%" />
+										<col width="14%" />
+									</colgroup>
+									 <tr ng-repeat="row in $data" ng-form="rowForm">
+											 
+											 <td data-title="'Range From'" filter="{GLFrom: 'text'}"  sortable="'GLFrom'" ng-switch="row.isEditing" ng-class="GLFrom.$dirty ? 'bg-warning' : ''" ng-form="SourceSyncID1" >
+												<span ng-switch-default class="editable-text" title={{row.GLFrom}} >{{row.GLFrom}}</span>
+												<div class="controls" ng-class="GLFrom.$invalid && GLFrom.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="text" name="GLFrom" ng-model="row.GLFrom" class="editable-input form-control input-sm" required/>
+												</div>
+											</td>
+											 <td data-title="'Range To'" filter="{GLTo: 'text'}"  sortable="'GLTo'" ng-switch="row.isEditing" ng-class="GLTo.$dirty ? 'bg-warning' : ''" ng-form="GLTo" >
+												<span ng-switch-default class="editable-text" title={{row.GLTo}} >{{row.GLTo}}</span>
+												<div class="controls" ng-class="GLTo.$invalid && GLTo.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="text" name="GLTo" ng-model="row.GLTo" class="editable-input form-control input-sm" required/>
+												</div>
+											</td>
+											<td data-title="'Account Type'"  filter="{AccountType: 'text'}" sortable="'AccountType'" ng-switch="row.isEditing" ng-class="AccountType.$dirty ? 'bg-warning' : ''" ng-form="AccountType" >
+												<span ng-switch-default class="editable-text" title={{row.AccountType}} >{{row.AccountType}}</span>											
+												<div class="controls" ng-class="AccountType.$invalid && AccountType.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<select name="AccountType" class="form-control"
+														ng-model="row.AccountType" ng-options="Target.AccountName as Target.AccountName for Target in vm.AccountTypeConfig" required>
+														<option value=''>Select Account Type</option>
+													</select>
+												</div>
+											</td>
+											 <td data-title="'Actual Sign Flip'" filter="{ActualSignFlip: 'text'}"  sortable="'ActualSignFlip'" ng-switch="row.isEditing" ng-class="ActualSignFlip.$dirty ? 'bg-warning' : ''" ng-form="ActualSignFlip" >
+												<span ng-switch-default class="editable-text" title={{row.ActualSignFlip}} >
+													<input  type="checkbox" ng-model="row.ActualSignFlip" ng-disabled="true"/>
+												</span>
+												<div class="controls" ng-class="ActualSignFlip.$invalid && ActualSignFlip.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="checkbox" name="ActualSignFlip" ng-model="row.ActualSignFlip"  />
+												</div>
+											</td>
+											 <td data-title="'Budget Sign Flip'" filter="{BudgetSignFlip: 'text'}"  sortable="'BudgetSignFlip'" ng-switch="row.isEditing" ng-class="BudgetSignFlip.$dirty ? 'bg-warning' : ''" ng-form="BudgetSignFlip" >
+												<span ng-switch-default class="editable-text" title={{row.BudgetSignFlip}} >
+														<input  type="checkbox" ng-model="row.BudgetSignFlip" ng-disabled="true"/>
+												</span>
+												<div class="controls" ng-class="BudgetSignFlip.$invalid && BudgetSignFlip.$dirty ? 'has-error' : ''" ng-switch-when="true">
+													<input type="checkbox" name="BudgetSignFlip" ng-model="row.BudgetSignFlip" />
+												</div>
+											</td>
+											<td>
+												<button class="btn btn-primary btn-sm" ng-click="vm.saveAccountType(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+												<button class="btn btn-default btn-sm" ng-click="vm.cancelAccountType(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+												<button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.editAccountType(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+												<button class="btn btn-danger btn-sm" ng-click="vm.deleteAccountType(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div> 
+            <div ng-show="!vm.showAccounttype">
+                <div class="row">
+                    <div class="row" style="height:30px !important">
+                        <div class="col-md-4">
+                            <div id="PackageAccountTypeConfigValid" class="alert alert-info collapse alertPropertyDomain">
+                                <a id="PackageAccountTypeConfigclose" class="close">&times;</a>
+                                At a time One Record will be editable, Cancel or save editable record
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="brn-group pull-right">
+                            <!-- ngIf: demo.isEditing -->
+                            <button class="btn btn-primary btn-sm" ng-disabled="vm.enablePackageAccountTypeConfig" ng-click="vm.addPackageAccountTypeConfig()">
+                                <span class="glyphicon glyphicon-plus" ng-disabled="vm.enablePackageAccountTypeConfig"></span>ADD New
+                            </button>
+                        </div>
+                        <table ng-table="vm.model.PackageAccountTypeGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+                            <colgroup>
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="13%" />
+                                <col width="13%" />
+                                <col width="14%" />
+                            </colgroup>
+                            <tr ng-repeat="row in $data" ng-form="rowForm">
+                                <td data-title="'Range From'" filter="{GLFrom: 'text'}" sortable="'GLFrom'" ng-switch="row.isEditing" ng-class="GLFrom.$dirty ? 'bg-warning' : ''" ng-form="GLFrom">
+                                    <span ng-switch-default class="editable-text" title={{row.GLFrom}}>{{row.GLFrom}}</span>
+                                    <div class="controls" ng-class="GLFrom.$invalid && GLFrom.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                        <input type="text" name="GLFrom" ng-model="row.GLFrom" class="editable-input form-control input-sm" required />
+                                    </div>
+                                </td>
+                                <td data-title="'Range To'" filter="{GLTo: 'text'}" sortable="'GLTo'" ng-switch="row.isEditing" ng-class="GLTo.$dirty ? 'bg-warning' : ''" ng-form="GLTo">
+                                    <span ng-switch-default class="editable-text" title={{row.GLTo}}>{{row.GLTo}}</span>
+                                    <div class="controls" ng-class="GLTo.$invalid && GLTo.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                        <input type="text" name="GLTo" ng-model="row.GLTo" class="editable-input form-control input-sm" required />
+                                    </div>
+                                </td>
+                                <td data-title="'Sign Flip'" filter="{SignFlip: 'text'}" sortable="'SignFlip'" ng-switch="row.isEditing" ng-class="SignFlip.$dirty ? 'bg-warning' : ''" ng-form="SignFlip">
+                                    <span ng-switch-default class="editable-text" title={{row.SignFlip}}>
+                                        <input type="checkbox" ng-model="row.SignFlip" ng-disabled="true" />
+                                    </span>
+                                    <div class="controls" ng-class="SignFlip.$invalid && SignFlip.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                        <input type="checkbox" name="SignFlip" ng-model="row.SignFlip" />
+                                    </div>
+                                </td>
+                                <td data-title="'Positive Value'" filter="{PositiveValue: 'text'}" sortable="'PositiveValue'" ng-switch="row.isEditing" ng-class="PositiveValue.$dirty ? 'bg-warning' : ''" ng-form="PositiveValue">
+                                    <span ng-switch-default class="editable-text" title={{row.PositiveValue}}>{{row.PositiveValue}}</span>
+                                    <div class="controls" ng-class="PositiveValue.$invalid && PositiveValue.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                        <input type="text" name="PositiveValue" ng-model="row.PositiveValue" class="editable-input form-control input-sm" required />
+                                    </div>
+                                </td>
+                                <td data-title="'Negative Value'" filter="{NegativeValue: 'text'}" sortable="'NegativeValue'" ng-switch="row.isEditing" ng-class="NegativeValue.$dirty ? 'bg-warning' : ''" ng-form="NegativeValue">
+                                    <span ng-switch-default class="editable-text" title={{row.NegativeValue}}>{{row.NegativeValue}}</span>
+                                    <div class="controls" ng-class="NegativeValue.$invalid && NegativeValue.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                        <input type="text" name="NegativeValue" ng-model="row.NegativeValue" class="editable-input form-control input-sm" required />
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" ng-click="vm.savePackageAccountTypeConfig(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+                                    <button class="btn btn-default btn-sm" ng-click="vm.cancelPackageAccountTypeConfig(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.editPackageAccountTypeConfig(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+                                    <button class="btn btn-danger btn-sm" ng-click="vm.deletePackageAccountTypeConfig(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>               
+     	</div>
+        <div ng-show="vm.isSet(4)">
+                  <div>
+                      <div class="row">
+                          <div class="row" style="height:30px !important">
+                              <div class="col-md-4">
+                                  <div id="SyncConfigValid" class="alert alert-info collapse alertPropertyDomain">
+                                      <a id="SyncConfigclose" class="close">&times;</a>
+                                      At a time One Record will be editable, Cancel or save editable record
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-12">
+                              <div class="brn-group pull-right">
+                                  <!-- ngIf: demo.isEditing -->
+                                  <button class="btn btn-primary btn-sm" ng-disabled="vm.enableAddEntityDomain" ng-click="vm.addEntityDomain()">
+                                      <span class="glyphicon glyphicon-plus" ng-disabled="vm.enableAddEntityDomain"></span>ADD New
+                                  </button>
+                              </div>
+                              <table ng-table="vm.model.SyncConfigGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+                                 <!-- <colgroup>
+                                      <col width="40%" />
+                                      <col width="40%" />
+                                      <col width="20%" />
+                                  </colgroup> -->
+                                  <tr ng-repeat="row in $data" ng-form="rowForm">                                     
+                                      <td data-title="'Config Name'" filter="{ConfigName: 'text'}" sortable="'ConfigName'" ng-switch="row.isEditing" ng-class="ConfigName.$dirty ? 'bg-warning' : ''" ng-form="ConfigName">
+                                          <span ng-switch-default class="editable-text" title={{row.ConfigName}}>{{row.ConfigName}}</span>
+                                          <div class="controls" ng-class="ConfigName.$invalid && ConfigName.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                              <input type="text" name="ConfigName" ng-model="row.ConfigName" class="editable-input form-control input-sm" required />
+                                          </div>
+                                      </td>
+                                      <td data-title="'Config Value'" filter="{ConfigValue: 'text'}" sortable="'ConfigValue'" ng-switch="row.isEditing" ng-class="ConfigValue.$dirty ? 'bg-warning' : ''" ng-form="ConfigValue">
+                                          <span ng-switch-default class="editable-text" title={{row.ConfigValue}}>{{row.ConfigValue}}</span>
+                                          <div class="controls" ng-class="ConfigValue.$invalid && ConfigValue.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                              <input type="text" name="ConfigValue" ng-model="row.ConfigValue" class="editable-input form-control input-sm" required />
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <button class="btn btn-primary btn-sm" ng-click="vm.saveSyncConfig(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+                                          <button class="btn btn-default btn-sm" ng-click="vm.cancelSyncConfig(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+                                          <button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.editSyncConfig(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+                                          <button class="btn btn-danger btn-sm" ng-click="vm.deleteSyncConfig(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+                                      </td>
+                                  </tr>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+  	</div>
+  </div>
+</div>
+

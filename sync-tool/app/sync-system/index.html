@@ -1,0 +1,72 @@
+ <div class="row">
+    <div class="col-md-6">
+      <h4>{{::vm.model.title}}</h4>     
+    </div>
+     <div class="col-md-6" >
+        <div class="alert alert-success" ng-show="vm.validation"  style="padding:8px !important;" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          Success!
+        </div>
+         <div class="pull-right">
+          <a class="btn btn-primary btn-sm"  ng-click="vm.showModal()">
+            <span class="glyphicon glyphicon-new-window"></span>Open Batch Files
+          </a>
+        </div>
+     </div>
+ </div>
+
+ <div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="brn-group pull-right">
+        <!-- ngIf: demo.isEditing -->
+        <button ng-show="false" class="btn btn-default" ng-disabled="vm.enableAdd" ng-click="vm.add()">
+          <span class="glyphicon glyphicon-plus" ng-disabled="vm.enableAdd"></span>{{vm.enableAdd}}
+        </button>
+      </div>
+      	<div class="row"  style="height:30px !important">
+          <div class="col-md-4" >
+              <div id="SyncSystemValid" class="alert alert-info collapse alertPropertyDomain">
+                <a id="SyncSystemclose"  class="close" >&times;</a>
+                At a time One Record will be editable, Cancel or save editable record
+              </div>
+          </div>
+        </div>	
+      <table ng-table="vm.model.gridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm"  disable-filter="vm.isAdding">
+        <colgroup>
+          <col width="30%" />
+          <col width="38%" />
+          <col width="10%" />
+          <col width="10%" />
+          <col width="12%" />
+        </colgroup>
+        <tr ng-repeat="row in $data" ng-form="rowForm">
+          <td data-title="'System Code'" filter="{SysCode: 'text'}" sortable="'SysCode'" ng-switch="" ng-class="SysCode.$dirty ? 'bg-warning' : ''" ng-form="SysCode">
+            <span title={{row.SysCode}} ng-switch-default class="editable-text">{{row.SysCode}}</span>            
+          </td>
+          <td data-title="'System Name'" filter="{SysName: 'text'}" sortable="'SysName'" ng-switch="" ng-class="SysName.$dirty ? 'bg-warning' : ''" ng-form="SysName">
+            <span title={{row.SysName}} ng-switch-default class="editable-text">{{row.SysName}}</span>            
+          </td>
+          <td data-title="'Retry Interval'"  sortable="'RetryInterval'" ng-switch="row.isEditing" ng-class="RetryInterval.$dirty ? 'bg-warning' : ''" ng-form="RetryInterval" >
+            <span ng-switch-default class="editable-text" title={{row.RetryInterval}} >{{row.RetryInterval}}</span>
+            <div class="controls" ng-class="RetryInterval.$invalid && RetryInterval.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              <input type="number" name="RetryInterval" ng-model="row.RetryInterval" class="editable-input form-control input-sm" required/>
+            </div>
+          </td>
+          <td data-title="'Retry Count'"  sortable="'RetryCount'" ng-switch="row.isEditing" ng-class="RetryCount.$dirty ? 'bg-warning' : ''" ng-form="RetryCount" >
+            <span ng-switch-default class="editable-text" title={{row.RetryCount}} >{{row.RetryCount}}</span>
+            <div class="controls" ng-class="RetryCount.$invalid && RetryCount.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              <input type="number" name="RetryCount" ng-model="row.RetryCount" class="editable-input form-control input-sm" required/>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-primary btn-sm" ng-click="vm.save(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid"><span class="glyphicon glyphicon-ok"></span></button>
+            <button class="btn btn-default btn-sm" ng-click="vm.cancel(row, rowForm)" ng-if="row.isEditing"><span class="glyphicon glyphicon-remove"></span></button>
+            <button class="btn btn-default btn-sm" ng-click="row.isEditing = true;vm.edit(row, rowForm)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button ng-show="false" class="btn btn-danger btn-sm" ng-click="vm.del(row)" ng-if="!row.isEditing"><span class="glyphicon glyphicon-trash"></span></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

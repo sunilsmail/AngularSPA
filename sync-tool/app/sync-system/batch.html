@@ -1,0 +1,20 @@
+
+<div class="modal-header">
+  <h1>Batch Files</h1>
+</div>
+<div class="modal-body">
+  <button class="btn btn-primary" ng-click="vm.generateBathFiles()">Generate</button>
+  <a class="btn btn-primary" ng-click="vm.downloadFile()">Download</a>
+<div style="display:none">
+<ul>
+    <li ng-repeat="code in vm.entityCode">
+      {{code.PropertyName}}
+    </li>
+ </ul>
+</div>
+
+ </div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-show="false" ng-click="vm.ok()">OK</button>
+    <button class="btn btn-warning" ng-click="vm.cancel()">Close</button>
+</div>

@@ -1,0 +1,109 @@
+ <div class="row">
+    <div class="col-md-12">   
+      <h4>Dashboard</h4>
+    </div>
+ </div>
+<form name="SyncDashboardForm" role="form" novalidate>
+  <div class="row" >
+    <div class="col-md-3" ng-class="{'has-error': SyncDashboardForm.Source.$invalid || (SyncDashboardForm.Source.$touched && SyncDashboardForm.Source.$pristine)}">
+        <select name="Source" class="form-control"
+            ng-model="vm.syncPath.SourceSystem" title="Source System" ng-options="Target.Id as Target.SysName for Target in vm.lstSourceTargetdata" ng-required="true">
+            <option value=''>Select Source System</option>
+        </select>
+    </div>
+    <div class="col-md-3" ng-class="{'has-error': SyncDashboardForm.Target.$invalid || (SyncDashboardForm.Target.$touched && SyncDashboardForm.Target.$pristine)}">
+          <select name="Target" class="form-control"
+            ng-model="vm.syncPath.TargetSystem"  title="Target System" ng-options="Target.Id as Target.SysName for Target in vm.lstSourceTargetdata | filter:{Id: '!' +vm.syncPath.SourceSystem}" ng-required="true"  ng-hide="vm.syncPath.SourceSystem==undefined" ng-disabled="vm.syncPath.SourceSystem==undefined" <!--ng-change="vm.showAccountType()"-->>
+            <option value=''>Select Target System</option>
+        </select>
+    </div>
+    <div class="col-md-3" ng-class="{'has-error': SyncDashboardForm.Target.$invalid || (SyncDashboardForm.Target.$touched && SyncDashboardForm.Target.$pristine)}">
+          <button class="btn btn-primary" ng-disabled="SyncDashboardForm.$invalid" ng-click="vm.search()">Load</button>
+    </div>
+ </div>
+</form>
+<br>
+ <div class="row">
+    <div class="col-md-12">
+     <table ng-table="vm.model.SyncSummarygridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm"  ng-show="vm.showAccounttype" >             
+        <tr ng-repeat="row in $data" ng-form="rowForm">
+          <td title={{SyncPathCode}} data-title="'Sync Path'" sortable="'SyncPathCode'">           
+              <a title={{row.SyncPathCode}} ng-click="vm.goTo(row)" style="cursor:pointer;"> {{row.SyncPathCode}}</a>   
+          </td>
+          <td data-title="'Last Run Date'" sortable="'LastRunTime'">
+            <span title={{row.LastRunTime}} >{{row.LastRunTime| date:'MM/dd/yyyy hh:mm:ss'}}</span>
+          </td>
+          <td data-title="'Time Taken'"  sortable="'LastRunDuration'">
+             <span title={{row.LastRunDuration}} >{{row.LastRunDuration}}</span>
+          </td>
+          <td data-title="'Next Run Date'"  sortable="'NextSyncTime'">
+             <span title={{row.NextSyncTime}} >{{row.NextSyncTime| date:'MM/dd/yyyy hh:mm:ss'}}</span>
+          </td>
+          <td data-title="'COA'"  sortable="'COA'">
+             <span title={{row.COA}} >{{row.COA}}</span>
+          </td>
+          <td data-title="'Property'"  sortable="'Property'">
+           <span title={{row.Property}} >{{row.Property}}</span>
+          </td>
+          <td data-title="'Actual'"  sortable="'Actual'">
+           <span title={{row.Actual}} >{{row.Actual}}</span>
+          </td>
+           <td data-title="'Budget'"  sortable="'Budget'">
+           <span title={{row.Budget}} >{{row.Budget}}</span>
+          </td>
+           <td data-title="'Floor Plan'"  sortable="'FloorPlan'">
+           <span title={{row.FloorPlan}} >{{row.FloorPlan}}</span>
+          </td>
+           <td data-title="'Unit'"  sortable="'Unit'">
+           <span title={{row.Unit}} >{{row.Unit}}</span>
+          </td>
+           <td data-title="'Tenant'"  sortable="'Tenant'">
+           <span title={{row.Tenant}} >{{row.Tenant}}</span>
+          </td>
+           <td data-title="'Lease'"  sortable="'Lease'">
+           <span title={{row.Lease}} >{{row.Lease}}</span>
+          </td>
+           <td data-title="'Statistical'"  sortable="'Statistical'">
+           <span title={{row.Statistical}} >{{row.Statistical}}</span>
+          </td>
+        </tr>
+		<tr >
+			<td class="NoData" colspan="13" ng-show="$data.length==0">
+				No data found.            
+			</td>
+		</tr>
+      </table>
+	  
+	<table ng-table="vm.model.SyncSummarygridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" ng-show="!vm.showAccounttype">             
+        <tr ng-repeat="row in $data" ng-form="rowForm">
+          <td title={{SyncPathCode}} data-title="'Sync Path'" sortable="'SyncPathCode'">           
+              <a title={{row.SyncPathCode}} ng-click="vm.goTo(row)" style="cursor:pointer;"> {{row.SyncPathCode}}</a>   
+          </td>
+          <td data-title="'Last Run Date'" sortable="'LastRunTime'">
+            <span title={{row.LastRunTime}} >{{row.LastRunTime| date:'MM/dd/yyyy hh:mm:ss'}}</span>
+          </td>
+          <td data-title="'Time Taken'"  sortable="'LastRunDuration'">
+             <span title={{row.LastRunDuration}} >{{row.LastRunDuration}}</span>
+          </td>
+          <td data-title="'Next Run Date'"  sortable="'NextSyncTime'">
+             <span title={{row.NextSyncTime}} >{{row.NextSyncTime| date:'MM/dd/yyyy hh:mm:ss'}}</span>
+          </td>
+          <td data-title="'IA Property'"  sortable="'IAProperty'">
+             <span title={{row.IAProperty}} ng-class="(row.IAProperty=='Success') ? 'success' : 'error'" >{{row.IAProperty}}</span>
+          </td>
+          <td data-title="'IA Balancing'"  sortable="'IABalancing'">
+           <span title={{row.IABalancing}} ng-class="(row.IABalancing=='Success') ? 'success' : 'error'" >{{row.IABalancing}}</span>
+          </td>
+          <td data-title="'IA Package'"  sortable="'IAPackage'">
+           <span title={{row.IAPackage}}  ng-class="(row.IAPackage=='Success') ? 'success' : 'error'">{{row.IAPackage}}</span>
+          </td>          
+        </tr>
+		<tr >
+			<td class="NoData" colspan="7" ng-show="$data.length==0">
+				No data found.              
+			</td>
+		</tr>
+      </table>
+	  
+      </div>
+  </div>

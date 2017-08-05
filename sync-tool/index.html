@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="app" xmlns="http://www.w3.org/1999/xhtml" style="overflow-x:hidden;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="styles/images/rp-logo-white.png" type="image/gif" sizes="16x16">
+    <title>RealPage&reg; Sync Agent Console</title>
+    <link href="styles/bootstrap.css" rel="stylesheet" />
+    <link href="styles/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="styles/ui-bootstrap-csp.css" rel="stylesheet" />
+    <link href="styles/font-awesome.css" rel="stylesheet" />
+    <link href="styles/ng-table.css" rel="stylesheet" />
+    
+    <!-- Module Styles -->
+    <link href="styles/app.css" rel="stylesheet" />
+</head>
+<body>   
+	<nav ng-include="'navbar.html'"  ng-if="location.path() == '/login'"></nav>
+    <div class="container-fluid">        
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div ui-view></div>
+            </div>          
+        </div>      
+    </div>
+    <script src="scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/jquery-ui.min.js"></script>
+    <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-animate.js"></script>
+    <script src="scripts/angular-ui-router.js"></script>
+    <script src="scripts/ui-bootstrap.js"></script>
+    <script src="scripts/ui-bootstrap-tpls.js"></script>
+    <script src="scripts/bootstrap-datetimepicker.js"></script>
+    <script src="scripts/ng-table.js"></script>
+    <!-- Module Scripts -->
+    <script src="app/app.js"></script>
+    <script src="app/dashboard/controllers/dashboard.js"></script>
+    <script src="app/dashboard/models/dashboard.js"></script>
+    <script src="app/dashboard/services/dashboard.js"></script>
+    <script src="app/sync-system/controllers/syncSystem.js"></script>
+    <script src="app/sync-system/models/syncSystem.js"></script>
+    <script src="app/sync-system/services/syncSystem.js"></script>
+
+    <script src="app/sync-path/controllers/syncPath.js"></script>
+    <script src="app/sync-path/models/syncPath.js"></script>
+    <script src="app/sync-path/services/syncPath.js"></script>
+
+
+    <script src="app/syncpath-new/controllers/syncPathNew.js"></script>
+    <script src="app/syncpath-new/models/syncPathNew.js"></script>
+    <script src="app/syncpath-new/services/syncPathNew.js"></script>
+
+    <script src="app/logs/controllers/logs.js"></script>
+    <script src="app/logs/models/logs.js"></script>
+    <script src="app/logs/services/logs.js"></script>
+
+	 <script src="app/sync-login/controllers/syncLogin.js"></script>
+    <script src="app/sync-login/models/syncLogin.js"></script>
+    <script src="app/sync-login/services/syncLogin.js"></script>
+</body>
+</html>

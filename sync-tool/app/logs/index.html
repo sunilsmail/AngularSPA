@@ -1,0 +1,80 @@
+ <div class="row">
+    <div class="col-md-4">
+      <h4>Sync Log for(<small>{{::vm.model.syncpathdisplaytext}}</small>)</h4>
+    </div>
+     <div class="col-md-2">
+          <div class="input-group date form_datetime "  title="Start Date Time" data-date-format="mm/dd/yyyy hh:ii:ss" data-link-field="dtp_input1">
+            <input class="form-control" name="StartTime" placeholder="Start Date Time" size="16"  ng-model="vm.log.StartTime" type="text" ng-required="true" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+          </div>
+    </div>
+     <div class="col-md-2">
+       <div class="input-group date form_datetime" title="End Date Time"  data-date-format="mm/dd/yyyy hh:ii:ss" data-link-field="dtp_input1">
+            <input class="form-control" name="EndTime" placeholder="End Date Time" size="16"  ng-model="vm.log.EndTime" type="text" ng-required="true" value="" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+          </div>
+    </div>
+     <div class="col-md-4">
+          <button class="btn btn-primary" ng-click="vm.getSyncLog()">
+           Search <span class="glyphicon glyphicon-search"></span></button>
+          <button class="btn btn-primary"  ng-click="vm.showModal(row)"  >View Log Files</button>
+    </div>
+ </div>
+
+ <div class="row">
+   <a class="btn btn-primary" ng-show="vm.showsyncButton" style="margin-left:10px;" href="#" ui-sref="root.syncPath">
+        <span class="glyphicon glyphicon-menu-left"></span>Back to Sync Path
+  </a>
+
+   <a class="btn btn-primary" ng-show="vm.showDashboard" style="margin-left:10px;" href="#" ui-sref="root">
+        <span class="glyphicon glyphicon-menu-left"></span>Back to Dashboard
+  </a> 
+ </div>
+<br>
+
+  <div>
+  <div class="row">
+    <div class="col-md-12">
+     <!-- <div class="brn-group pull-right">      
+        <div class="controls" style="padding-bottom:4px;" >
+          <select name="AccountType" class="form-control" ng-change="vm.change()"
+            ng-model="vm.syncPath" ng-options="Target.SyncPathID as Target.SyncPathCode for Target in vm.lstSyncPath">
+            <option value=''>Select SyncPath</option>
+          </select>
+        </div>
+      </div>-->
+
+      <table ng-table="vm.model.syncLogGridConfig" class="table table-condensed table-bordered table-striped" ng-form="vm.tableForm" disable-filter="vm.isAdding">
+       
+        <tr ng-repeat="row in $data" ng-form="rowForm">
+          <td data-title="'Domain Code'" filter="{EntityDomainCode: 'text'}" sortable="'EntityDomainCode'" ng-switch="" ng-class="EntityDomainCode.$dirty ? 'bg-warning' : ''" ng-form="EntityDomainCode">
+            <span title={{row.EntityDomainCode}} ng-switch-default class="editable-text">{{row.EntityDomainCode}}</span> 
+          </td>
+          <td data-title="'Property'" filter="{PropertyName: 'text'}" sortable="'PropertyName'" ng-switch="" ng-class="PropertyName.$dirty ? 'bg-warning' : ''" ng-form="PropertyName">
+            <span title={{row.PropertyName}} ng-switch-default class="editable-text">{{row.PropertyName}}</span>  
+          </td>
+          <td data-title="'Queue Date'"  sortable="'QueuedDate'" ng-switch="" ng-class="QueuedDate.$dirty ? 'bg-warning' : ''" ng-form="QueuedDate" >
+            <span ng-switch-default class="editable-text" title={{row.QueuedDate}} >{{row.QueuedDate| date:'MM/dd/yyyy h:mm a'}}</span>           
+          </td>
+          <td data-title="'Start Date'"  sortable="'StartDate'" ng-switch="" ng-class="StartDate.$dirty ? 'bg-warning' : ''" ng-form="StartDate" >
+            <span ng-switch-default class="editable-text" title={{row.StartDate}} >{{row.StartDate| date:'MM/dd/yyyy h:mm a'}}</span>           
+          </td>
+          <td data-title="'End Date'"  sortable="'EndDate'" ng-switch="" ng-class="EndDate.$dirty ? 'bg-warning' : ''" ng-form="EndDate" >
+            <span ng-switch-default class="editable-text" title={{row.EndDate}} >{{row.EndDate| date:'MM/dd/yyyy h:mm a'}}</span>           
+          </td>
+          <td data-title="'Wait Time'"  sortable="'WaitTime'" ng-switch="" ng-class="WaitTime.$dirty ? 'bg-warning' : ''" ng-form="WaitTime" >
+            <span ng-switch-default class="editable-text" title='HH:MM:SS' >{{row.WaitTime}}</span>           
+          </td>
+           <td data-title="'Process Time'"  sortable="'ProcessTime'" ng-switch="" ng-class="ProcessTime.$dirty ? 'bg-warning' : ''" ng-form="ProcessTime" >
+            <span ng-switch-default class="editable-text" title='HH:MM:SS' >{{row.ProcessTime}}</span>           
+          </td>
+          <td data-title="'Status'"  sortable="'Status'" ng-switch="" ng-class="Status.$dirty ? 'bg-warning' : ''" ng-form="Status" >
+             <span ng-switch-default class="editable-text" title={{row.Status}} >{{row.Status}}</span>     
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<style>
+     
+#login {
+    padding-top: 50px
+}
+#login .form-wrap {
+    width: 30%;
+    margin: 0 auto;
+}
+#login h1 {
+    color: #286090;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+    </style>
+<section id="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-wrap">
+                <h1>Login</h1>
+                    <form id="login-form" autocomplete="off">
+                        <div class="form-group">
+                            <label for="UserName" class="sr-only">User Name</label>
+                            <input type="text" name="UserName" id="UserName" class="form-control" placeholder="User Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="key" class="sr-only">Password</label>
+                            <input type="password" name="key" id="key" class="form-control" placeholder="Password">
+                        </div>                        
+                        <input type="button" ng-click="vm.login()" id="btn-login" class="btn btn-primary" value="Log in">
+                    </form>
+                    <hr>
+                </div>
+            </div> 
+        </div>
+    </div>
+</section>
+ 
+ 
